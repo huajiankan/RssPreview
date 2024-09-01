@@ -5,7 +5,6 @@
 //  Created by KrabsWang on 2024/9/1.
 //
 
-
 import Foundation
 import SwiftUI
 
@@ -15,6 +14,7 @@ struct RssListView: View {
     @State private var searchText: String = "" // 新增搜索文本状态变量
     @State private var rssUrl: String = "" // 新增 RSS URL 状态变量
     @State private var showSheet: Bool = false // 控制弹窗显示
+    @State private var showErrorAlert: Bool = false // 新增错误提示状态
     @Environment(\.colorScheme) var colorScheme // 获取当前的颜色模式
 
     var body: some View {
@@ -57,11 +57,10 @@ struct RssListView: View {
             .padding(.horizontal, 8) // 设置左右间距为8px
 
             if viewModel.isLoading {
-                Text("加载中...")
+                ProgressView("加载中...")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(Color(colorScheme == .dark ? .black : .white))
                     .foregroundColor(.gray)
-                    .multilineTextAlignment(.center)
             } else {
                 List(filteredRssItems) { item in
                     RssListItemView(item: item, isSelected: Binding(
@@ -110,6 +109,18 @@ struct RssListView: View {
                 .padding(.bottom) // 调整按钮与底部的间距
             }
             .frame(width: 300, height: 150) // 调整弹窗的高度
+        }
+        .alert(isPresented: $showErrorAlert) {
+            Alert(
+                title: Text("错误"),
+                message: Text(viewModel.errorMessage ?? "未知错误"),
+                dismissButton: .default(Text("确定"))
+            )
+        }
+        .onChange(of: viewModel.errorMessage) { newValue in
+            if newValue != nil {
+                showErrorAlert = true
+            }
         }
     }
 

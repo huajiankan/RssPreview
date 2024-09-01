@@ -18,56 +18,33 @@ class RssViewModel: ObservableObject {
     @Published var rssTitle: String = "" // 添加 RSS 标题
 
     func fetchRssItems() {
-        isLoading = true // 开始加载
-        let semaphore = DispatchSemaphore(value: 0)
+        isLoading = true
+        errorMessage = nil // 重置错误消息
         
         guard let url = URL(string: rssUrl) else {
-            DispatchQueue.main.async {
-                self.errorMessage = "Invalid URL"
-                self.isLoading = false // 加载结束
-            }
-            print("Error: Invalid URL")
+            errorMessage = "无效的 URL"
+            isLoading = false
             return
         }
         
-        DispatchQueue.global().async {
+        Task {
             do {
-                print("Fetching RSS data...")
-                let data = try Data(contentsOf: url)
-                print("RSS data fetched, size: \(data.count) bytes")
-                
+                let (data, _) = try await URLSession.shared.data(from: url)
                 let parser = XMLParser(data: data)
                 let delegate = RssParserDelegate()
                 parser.delegate = delegate
                 
-                print("Parsing RSS data...")
                 if parser.parse() {
-                    DispatchQueue.main.async {
-                        self.rssItems = delegate.rssItems
-                        self.rssTitle = delegate.rssTitle // 更新 RSS 标题
-                        self.isLoading = false // 加载结束
-                        print("Updated rssItems with \(self.rssItems.count) items")
-                    }
-                    DispatchQueue.main.async {
-                        self.errorMessage = nil
-                    }
+                    self.rssItems = delegate.rssItems
+                    self.rssTitle = delegate.rssTitle
                 } else {
-                    DispatchQueue.main.async {
-                        self.errorMessage = "Failed to parse RSS data"
-                        self.isLoading = false // 加载结束
-                    }
-                    print("Error: Failed to parse RSS data")
+                    throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "解析 RSS 数据失败"])
                 }
             } catch {
-                DispatchQueue.main.async {
-                    self.errorMessage = "Error fetching RSS: \(error.localizedDescription)"
-                    self.isLoading = false // 加载结束
-                }
-                print("Error fetching RSS: \(error.localizedDescription)")
+                errorMessage = "获取 RSS 失败: \(error.localizedDescription)"
             }
-            semaphore.signal()
+            
+            isLoading = false
         }
-        
-        semaphore.wait()
     }
 }
