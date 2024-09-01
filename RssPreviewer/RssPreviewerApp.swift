@@ -13,5 +13,12 @@ struct RssPreviewerApp: App {
         WindowGroup {
             ContentView()
         }
+        .windowStyle(HiddenTitleBarWindowStyle())
+        .windowToolbarStyle(UnifiedWindowToolbarStyle())
+        .commands {
+            CommandGroup(replacing: .appInfo) {
+                EmptyView()
+            }
+        }
     }
 }
