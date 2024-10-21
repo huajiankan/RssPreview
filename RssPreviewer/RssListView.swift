@@ -1,10 +1,3 @@
-//
-//  RssListView.swift
-//  RssPreviewer
-//
-//  Created by KrabsWang on 2024/9/1.
-//
-
 import Foundation
 import SwiftUI
 
@@ -62,22 +55,24 @@ struct RssListView: View {
                     .background(Color(colorScheme == .dark ? .black : .white))
                     .foregroundColor(.gray)
             } else {
-                List(filteredRssItems) { item in
-                    RssListItemView(item: item, isSelected: Binding(
-                        get: { item == selectedRssItem },
-                        set: { isSelected in
-                            if isSelected {
-                                selectedRssItem = item
-                            } else {
-                                selectedRssItem = nil
-                            }
+                ScrollView {
+                    LazyVStack(spacing: 16) {
+                        ForEach(filteredRssItems) { item in
+                            RssListItemView(item: item, isSelected: Binding(
+                                get: { item == selectedRssItem },
+                                set: { isSelected in
+                                    if isSelected {
+                                        selectedRssItem = item
+                                    } else {
+                                        selectedRssItem = nil
+                                    }
+                                }
+                            ))
+                            .padding(.horizontal, 16)
                         }
-                    ))
-                    .listRowInsets(EdgeInsets()) // 移除默认的行内边距
-                    .listRowBackground(Color.clear) // 确保背景颜色透明
+                    }
+                    .padding(.top, 10)
                 }
-                .background(Color(colorScheme == .dark ? .black : .white)) // 设置List的背景颜色
-                .padding(.horizontal, 5) // 添加水平内边距，确保左右留白5px
             }
         }
         .background(Color(colorScheme == .dark ? .black : .white)) // 设置背景颜色与List一致
@@ -167,8 +162,12 @@ struct RssListItemView: View {
                         .font(.caption)
                         .foregroundColor(self.isSelected ? .white : .gray) // 选中时字体颜色为白色
                 }
-                .padding(.vertical)
-                .padding(.horizontal, 8) // 调整左右内边距为8px
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.white)
+                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                )
                 .foregroundColor(isSelected ? .white : (colorScheme == .dark ? .white : .black)) // 选中时字体颜色为白色
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(
