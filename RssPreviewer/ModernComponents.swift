@@ -2,7 +2,7 @@
 //  ModernComponents.swift
 //  RssPreviewer
 //
-//  Created by Codegen on 2024/12/25.
+//  Created by Codegen on 2025/6/25.
 //
 
 import SwiftUI
@@ -360,4 +360,3 @@ extension View {
         )
     }
 }
-

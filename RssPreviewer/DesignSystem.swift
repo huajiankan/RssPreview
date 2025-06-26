@@ -2,7 +2,7 @@
 //  DesignSystem.swift
 //  RssPreviewer
 //
-//  Created by Codegen on 2024/12/25.
+//  Created by Codegen on 2025/6/25.
 //
 
 import SwiftUI
@@ -210,4 +210,3 @@ extension DesignSystem.Colors {
         colorScheme == .dark ? Color.white : Color.black
     }
 }
-

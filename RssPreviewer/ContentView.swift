@@ -3,7 +3,7 @@
 //  RssPreviewer
 //
 //  Created by KrabsWang on 2024/9/1.
-//  Updated by Codegen on 2024/12/25.
+//  Updated by Codegen on 2025/6/25.
 //
 
 import SwiftUI

@@ -3,7 +3,7 @@
 //  RssPreviewer
 //
 //  Created by KrabsWang on 2024/9/1.
-//  Updated by Codegen on 2024/12/25.
+//  Updated by Codegen on 2025/6/25.
 //
 
 import Foundation
@@ -142,7 +142,7 @@ struct RssListView: View {
                 .foregroundColor(DesignSystem.Colors.textTertiary)
             
             VStack(spacing: DesignSystem.Spacing.sm) {
-                Text(searchText.isEmpty ? "暂无内容" : "���找到相关文章")
+                Text(searchText.isEmpty ? "暂无内容" : "�����找到相关文章")
                     .font(DesignSystem.Typography.headline)
                     .foregroundColor(DesignSystem.Colors.textSecondary)
                 
@@ -236,7 +236,7 @@ struct RssListItemView: View {
                         .truncationMode(.tail)
                     Text(item.pubDate)
                         .font(.caption)
-                        .foregroundColor(self.isSelected ? .white : .gray) // 选中时字体颜色��白色
+                        .foregroundColor(self.isSelected ? .white : .gray) // 选中时字体��色��白色
                 }
                 .padding(.vertical)
                 .padding(.horizontal, 8) // 调整左右内边距为8px
