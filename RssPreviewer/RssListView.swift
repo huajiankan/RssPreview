@@ -10,12 +10,13 @@ import SwiftUI
 
 struct RssListView: View {
     @ObservedObject var viewModel: RssViewModel
-    @State private var selectedRssItem: RssItem? // 新增选中状态变量
-    @State private var searchText: String = "" // 新增搜索文本状态变量
-    @State private var rssUrl: String = "" // 新增 RSS URL 状态变量
-    @State private var showSheet: Bool = false // 控制弹窗显示
-    @State private var showErrorAlert: Bool = false // 新增错误提示状态
-    @Environment(\.colorScheme) var colorScheme // 获取当前的颜色模式
+    @State private var selectedRssItem: RssItem?
+    @State private var searchText: String = ""
+    @State private var rssUrl: String = ""
+    @State private var showSheet: Bool = false
+    @State private var showErrorAlert: Bool = false
+    @Environment(\.colorScheme) var colorScheme
+    @State private var isSearchFocused: Bool = false
 
     var body: some View {
         VStack {
